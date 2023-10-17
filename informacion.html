@@ -21,7 +21,7 @@
                     <a href='https://postimg.cc/XrnWgNBF' target='_blank'><img src='https://i.postimg.cc/XrnWgNBF/logo-peque-o-rs.png' border='0' alt='logo-peque-o-rs' /></a>
                 </li>
                 <li class="menu-item hidden"><a href="../consumoApiBDD/">Inicio</a></li>
-                <li class="menu-item hidden"><a href="informacion.php">Información</a></li>
+                <li class="menu-item hidden"><a href="informacion.html">Información</a></li>
             </ul>
         </div>
 
@@ -31,42 +31,46 @@
     </header>
 
     <section>
+    <div class="card rounded p-5 table-responsive" style="background-color: white;">
+        <table id="tb" class="pt-4 pb-4 table-hover table table-light ">
+            <thead class="text-center">
+                <th><label>Registro</label></th>
+                <th><label>Nombre</label></th>
+                <th><label>Usuario</label></th>
+                <th><label>Correo Electrónico</label></th>
+                <th><label>Teléfono</label></th>
+                <th><label>Página Web</label></th>
+            </thead>
 
-        <div class=" card rounded p-5 table-responsive" style="background-color: white;">
-            <table id="tb" class="pt-4 pb-4 table-hover table table-light ">
-                <thead class="text-center">
-                    <th><label>Registro</label></th>
-                    <th><label>Nombre</label></th>
-                    <th><label>Usuario</label></th>
-                    <th><label>Correo Electronico</label></th>
-                    <th><label>Telefono</label></th>
-                    <th><label>Pagina Web</label></th>
-                </thead>
+            <tbody class="text-center" id="table-body">
+            </tbody>
+        </table>
+    </div>
+</section>
 
-                <tbody class="text-center">
+<script>
+    const tableBody = document.getElementById('table-body');
 
-                    <?php
-                    $url = "https://jsonplaceholder.typicode.com/users";
-                    $json = file_get_contents($url);
-                    $datos = json_decode($json, true);
-
-                    foreach ($datos as $clave => $valor) {
-                        echo "<tr>";
-                        echo "<td>" . "<b>" . $valor["id"] . "</b>" . "</td>";
-                        echo "<td>" . $valor["name"] . "</td>";
-                        echo "<td>" . $valor["username"] . "</td>";
-                        echo "<td>" . $valor["email"] . "</td>";
-                        echo "<td>" . $valor["phone"] . "</td>";
-                        echo "<td>" . $valor["website"] . "</td>";
-                        echo "</tr>";
-                    }
-                    ?>
-                </tbody>
-            </table>
-
-        </div>
-
-    </section>
+    fetch('https://jsonplaceholder.typicode.com/users')
+        .then(response => response.json())
+        .then(data => {
+            data.forEach(valor => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td><b>${valor.id}</b></td>
+                    <td>${valor.name}</td>
+                    <td>${valor.username}</td>
+                    <td>${valor.email}</td>
+                    <td>${valor.phone}</td>
+                    <td>${valor.website}</td>
+                `;
+                tableBody.appendChild(row);
+            });
+        })
+        .catch(error => {
+            console.error('Error:', error);
+        });
+</script>
 
     <!-- js -->
     <script src="../js/js.js"></script>
